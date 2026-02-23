@@ -1,28 +1,26 @@
 import random
+import numpy as np
 
 #Implementation of Epsilon Greedy Agent
 
-def epsilon_greedy(env, known_vals, epsilon = 0.2):
+def epsilon_greedy(enviroment, current_estimate, epsilon = 0.2):
     random_val = random.randint(1,100)
     if(random_val <= epsilon*100):
-        arm = explore(known_vals, env)
-        print('')
+        epsilon_greedy_arm = explore(current_estimate, enviroment)
     else:
-        arm = exploit(known_vals)
-    return arm
+        epsilon_greedy_arm = exploit(enviroment, current_estimate, epsilon = 0)
+    return epsilon_greedy_arm
 
 #Implementation of Exploitation Agent
-def exploit(known_vals, env = 1, epsilon = 0):
-    greedy_arm = max(known_vals)
+def exploit(enviroment, current_estimate, epsilon = 0):
+    #Will always select the first one as all are 0
+    greedy_arm = max(current_estimate, key=lambda k: current_estimate[k])
     return greedy_arm
 
 
 #Implementation of Exploring Agent
-def explore(known_vals, env, epsilon = 0):
-    val = max(known_vals)
-    select_arm = val
-    while (select_arm == val):
-        select_arm = random.randint(1, len(env.keys()))
+def explore(enviroment, current_estimate, epsilon = 0):
+    select_arm = random.randint(0, len(enviroment.keys())-1)#Arms from 0 to n-1
     return select_arm
 
 
